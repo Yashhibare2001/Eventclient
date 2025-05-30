@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import logo from '../assests/logo.jpg'; // Adjust the path as necessary 
 
 export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
         <img 
-          src="/assets/logo.png" 
+          src={logo} 
           alt="EventEase Logo" 
           className="navbar-logo" 
         />
@@ -20,9 +21,7 @@ export default function Navbar() {
         <li><Link to="/login">Login</Link></li>
         <li>
           <Link to="/dashboard" className="dashboard-icon" title="Dashboard">
-            {/* <img src="/assets/user-icon.png" alt="Dashboard" /> */}
             <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Dashboard" />
-
           </Link>
         </li>
       </ul>

@@ -19,7 +19,6 @@ const BookingEvents = () => {
 
   const handleBooking = () => {
     alert(`🎟️ Booked ${count} ticket(s) for "${event.title}"`);
-    // Optionally send POST request here to /api/events/booking
   };
 
   if (!event) return <p>Loading event...</p>;

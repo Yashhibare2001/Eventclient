@@ -5,7 +5,6 @@ const HistoryPage = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    // Sample data — replace this with an API call later
     setBookings([
       {
         id: 1,

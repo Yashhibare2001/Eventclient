@@ -9,13 +9,11 @@ const Dashboard = () => {
   const [bookingHistory, setBookingHistory] = useState([]);
 
   useEffect(() => {
-    // Load user data from localStorage
     const storedName = localStorage.getItem('userName') || 'User';
     const storedRole = localStorage.getItem('userRole') || 'User';
     setUserName(storedName);
     setUserRole(storedRole);
 
-    // Simulated fetch - replace with actual API call
     const allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
 
     const userBookings = allBookings.filter(b => b.user === storedName);
