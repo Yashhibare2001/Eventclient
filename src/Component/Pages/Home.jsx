@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Home.css";
-import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [events, setEvents] = useState([]);
@@ -11,7 +10,6 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchText, setSearchText] = useState("");
 
-  const navigate = useNavigate();
   const userName = localStorage.getItem("userName") || "guest";
 
   // Fetch events + bookings
