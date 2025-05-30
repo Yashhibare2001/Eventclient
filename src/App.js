@@ -9,7 +9,7 @@ import Navbar from "./Component/Pages/Navbar";
 import Dashboard from './Component/Pages/Dashboard'; // adjust path
 import BookingEvents from "./Component/Pages/BookingEvents";
 import EventBooked from "./Component/Pages/EventBooked";
-// import BookingHistory from "./pages/BookingHistory";
+import HistoryPage from "./Component/Pages/HistoryPage";
 
 function App() {
   return (
@@ -21,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/bookings" element={<BookingEvents />} />
         <Route path="/EventBooked" element={<EventBooked />} />
+        <Route path="/History" element={<HistoryPage />} />
+
         {/* Assuming EventsPage is used for both events and history */}
 
 

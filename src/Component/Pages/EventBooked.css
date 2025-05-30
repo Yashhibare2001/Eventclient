@@ -68,3 +68,57 @@
   margin-top: 1rem;
 }
 
+.booked-events-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.booked-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.booked-event-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.booked-event-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.booked-event-card h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.qr-section {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.cancel-btn {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: crimson;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+.cancel-btn:disabled {
+  background-color: #888;
+  cursor: wait;
+}

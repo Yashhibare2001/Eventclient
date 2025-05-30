@@ -7,6 +7,7 @@ import "./EventBooked.css";
 const EventBooked = () => {
   const location = useLocation();
   const [bookedEvents, setBookedEvents] = useState([]);
+  const [cancellingId, setCancellingId] = useState(null);
   const userName = localStorage.getItem("userName") || "guest";
 
   const fetchBookedEvents = useCallback(async () => {
@@ -31,23 +32,25 @@ const EventBooked = () => {
   const newlyBookedEvent = location.state?.bookedEvent;
 
   const handleCancel = async (eventId) => {
-    // Optimistically update UI
+    setCancellingId(eventId);
+
+    // Optimistically remove the event from UI
     const remainingEvents = bookedEvents.filter(event => event._id !== eventId);
     setBookedEvents(remainingEvents);
 
     try {
       await axios.delete(`https://eventserver-28rf.onrender.com/api/bookings`, {
-        data: { userName, eventId }
+      data: { userName, eventId }
       });
-
-      alert("❌ Booking cancelled.");
+      // Only remove the cancelled event from the UI
+      setBookedEvents(prevEvents => prevEvents.filter(event => event._id !== eventId));
     } catch (error) {
       console.error("Cancel error:", error);
-      alert("Failed to cancel booking. Restoring event...");
-      // Re-fetch from backend to restore correct state
-      fetchBookedEvents();
+      alert("Failed to cancel booking.");
+    } finally {
+      setCancellingId(null);
     }
-  };
+    };
 
   const allEventsToShow = newlyBookedEvent
     ? [newlyBookedEvent, ...bookedEvents.filter(e => e._id !== newlyBookedEvent._id)]
@@ -74,8 +77,12 @@ const EventBooked = () => {
                 <QRCodeCanvas value={`Event:${event._id}|User:${userName}`} size={128} />
               </div>
 
-              <button className="cancel-btn" onClick={() => handleCancel(event._id)}>
-                Cancel Booking
+              <button
+                className="cancel-btn"
+                onClick={() => handleCancel(event._id)}
+                disabled={cancellingId === event._id}
+              >
+                {cancellingId === event._id ? "Cancelling..." : "Cancel Booking"}
               </button>
             </div>
           ))}
