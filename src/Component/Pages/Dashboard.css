@@ -103,3 +103,33 @@
 .card:hover {
   transform: translateY(-3px);
 }
+
+.booked-tickets, .booking-history {
+  background: #fff;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+.ticket-card {
+  background-color: #f0f4ff;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cancel-btn {
+  background: #ff5555;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cancel-btn:hover {
+  background: #e03a3a;
+}

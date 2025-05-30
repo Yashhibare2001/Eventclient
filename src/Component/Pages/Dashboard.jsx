@@ -5,6 +5,8 @@ import './Dashboard.css';
 const Dashboard = () => {
   const [userName, setUserName] = useState('');
   const [userRole, setUserRole] = useState('');
+  const [bookedTickets, setBookedTickets] = useState([]);
+  const [bookingHistory, setBookingHistory] = useState([]);
 
   useEffect(() => {
     // Load user data from localStorage
@@ -12,7 +14,30 @@ const Dashboard = () => {
     const storedRole = localStorage.getItem('userRole') || 'User';
     setUserName(storedName);
     setUserRole(storedRole);
+
+    // Simulated fetch - replace with actual API call
+    const allBookings = JSON.parse(localStorage.getItem('allBookings')) || [];
+
+    const userBookings = allBookings.filter(b => b.user === storedName);
+    const active = userBookings.filter(b => !b.cancelled);
+    const history = userBookings;
+
+    setBookedTickets(active);
+    setBookingHistory(history);
   }, []);
+
+  const handleCancel = (id) => {
+    const updatedHistory = bookingHistory.map(b => {
+      if (b.id === id) {
+        return { ...b, cancelled: true };
+      }
+      return b;
+    });
+
+    localStorage.setItem('allBookings', JSON.stringify(updatedHistory));
+    setBookingHistory(updatedHistory);
+    setBookedTickets(updatedHistory.filter(b => !b.cancelled));
+  };
 
   return (
     <div className="dashboard-wrapper">
@@ -55,12 +80,44 @@ const Dashboard = () => {
         <section className="dashboard-cards">
           <div className="card">
             <h3>🧾 Total Bookings</h3>
-            <p>12 Events Booked</p>
+            <p>{bookingHistory.length} Events Booked</p>
           </div>
           <div className="card">
             <h3>📅 Upcoming Event</h3>
-            <p>Annual Meetup – June 15</p>
+            <p>{bookedTickets[0]?.event || 'None'}</p>
           </div>
+        </section>
+
+        {/* Booked Tickets */}
+        <section className="booked-tickets">
+          <h3>🎫 Booked Tickets</h3>
+          {bookedTickets.length === 0 ? (
+            <p>No active bookings.</p>
+          ) : (
+            bookedTickets.map(ticket => (
+              <div className="ticket-card" key={ticket.id}>
+                <span>{ticket.event} — {ticket.date}</span>
+                <button className="cancel-btn" onClick={() => handleCancel(ticket.id)}>Cancel</button>
+              </div>
+            ))
+          )}
+        </section>
+
+        {/* Booking History */}
+        <section className="booking-history">
+          <h3>📋 Booking History</h3>
+          {bookingHistory.length === 0 ? (
+            <p>No bookings yet.</p>
+          ) : (
+            bookingHistory.map(ticket => (
+              <div className="ticket-card" key={ticket.id}>
+                <span>
+                  {ticket.event} — {ticket.date}
+                  {ticket.cancelled && <span style={{ color: 'red', marginLeft: '10px' }}>(Cancelled)</span>}
+                </span>
+              </div>
+            ))
+          )}
         </section>
       </main>
     </div>

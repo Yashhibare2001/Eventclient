@@ -1,7 +1,6 @@
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
@@ -11,33 +10,35 @@ const Home = () => {
   const [searchText, setSearchText] = useState("");
 
   const userName = localStorage.getItem("userName") || "guest";
+  const navigate = useNavigate();
 
-  // Fetch events + bookings
   useEffect(() => {
     axios.get("https://eventserver-28rf.onrender.com/api/events")
-      .then((res) => {
-        const all = res.data.events || res.data;
-        setEvents(all);
-      });
+      .then((res) => setEvents(res.data.events || res.data))
+      .catch((err) => console.error("Error fetching events", err));
 
     axios.get(`https://eventserver-28rf.onrender.com/api/booked-events/${userName}`)
-      .then(res => {
-        setBookedIds(res.data.bookedEventIds || []);
-      });
+      .then(res => setBookedIds(res.data.bookedEventIds || []))
+      .catch((err) => console.error("Error fetching booked IDs", err));
   }, [userName]);
 
-  const handleBookNow = (eventId) => {
+  const handleBookNow = (event) => {
     axios.post("https://eventserver-28rf.onrender.com/api/bookings", {
       userName,
-      eventId,
+      eventId: event._id,
       quantity: 1
     })
     .then(() => {
-      setBookedIds(prev => [...prev, eventId]); 
+      setBookedIds(prev => [...prev, event._id]);
+      navigate("/EventBooked", {
+        state: { bookedEvent: event }
+      });
     })
-    .catch(err => {
-      alert("Booking failed or already booked.");
-      console.error(err);
+    .catch(() => {
+      // Even if already booked, navigate with the event details
+      navigate("/EventBooked", {
+        state: { bookedEvent: event }
+      });
     });
   };
 
@@ -70,6 +71,9 @@ const Home = () => {
               {cat}
             </button>
           ))}
+          <button onClick={() => navigate("/EventBooked")} className="show-booked-link">
+            Show Booked Events
+          </button>
         </div>
       </div>
 
@@ -82,11 +86,10 @@ const Home = () => {
             <p>{event.category}</p>
             <p>₹{event.price} • {event.date}</p>
             <p>⭐ {event.rating}</p>
-
             {bookedIds.includes(event._id) ? (
               <button className="booked-btn" disabled>Booked</button>
             ) : (
-              <button className="book-btn" onClick={() => handleBookNow(event._id)}>
+              <button className="book-btn" onClick={() => handleBookNow(event)}>
                 Book Now
               </button>
             )}

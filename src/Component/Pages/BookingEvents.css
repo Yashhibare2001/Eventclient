@@ -2,6 +2,7 @@
   padding: 2rem;
   display: flex;
   justify-content: center;
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
 }
 
 .booking-card {

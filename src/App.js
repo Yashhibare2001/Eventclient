@@ -8,6 +8,7 @@ import Home from "./Component/Pages/Home";
 import Navbar from "./Component/Pages/Navbar";
 import Dashboard from './Component/Pages/Dashboard'; // adjust path
 import BookingEvents from "./Component/Pages/BookingEvents";
+import EventBooked from "./Component/Pages/EventBooked";
 // import BookingHistory from "./pages/BookingHistory";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/bookings" element={<BookingEvents />} />
+        <Route path="/EventBooked" element={<EventBooked />} />
         {/* Assuming EventsPage is used for both events and history */}
 
 
