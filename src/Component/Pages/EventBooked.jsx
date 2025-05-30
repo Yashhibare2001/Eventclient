@@ -28,24 +28,27 @@ const EventBooked = () => {
     fetchBookedEvents();
   }, [fetchBookedEvents]);
 
-  // If an event was passed via navigation, show it at the top
   const newlyBookedEvent = location.state?.bookedEvent;
 
   const handleCancel = async (eventId) => {
+    // Optimistically update UI
+    const remainingEvents = bookedEvents.filter(event => event._id !== eventId);
+    setBookedEvents(remainingEvents);
+
     try {
       await axios.delete(`https://eventserver-28rf.onrender.com/api/bookings`, {
         data: { userName, eventId }
       });
 
       alert("❌ Booking cancelled.");
-      fetchBookedEvents();
     } catch (error) {
       console.error("Cancel error:", error);
-      alert("Failed to cancel booking.");
+      alert("Failed to cancel booking. Restoring event...");
+      // Re-fetch from backend to restore correct state
+      fetchBookedEvents();
     }
   };
 
-  // Avoid duplication if passed event is already in list
   const allEventsToShow = newlyBookedEvent
     ? [newlyBookedEvent, ...bookedEvents.filter(e => e._id !== newlyBookedEvent._id)]
     : bookedEvents;

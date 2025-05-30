@@ -35,7 +35,6 @@ const Home = () => {
       });
     })
     .catch(() => {
-      // Even if already booked, navigate with the event details
       navigate("/EventBooked", {
         state: { bookedEvent: event }
       });

@@ -10,7 +10,7 @@ export default function Navbar() {
           alt="EventEase Logo" 
           className="navbar-logo" 
         />
-        <h1 className="navbar-title">EventEase</h1>
+        <h1 className="navbar-title">BookMyEvent</h1>
       </div>
 
       <ul className="navbar-links">
